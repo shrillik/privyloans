@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Status - PrivyLoans</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-dark: #0d1117;
+            --bg-light: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-dim: #848d97;
+            --green: #2ea043;
+            --green-light: #3fb950;
+            --red: #f85149;
+            --yellow: #e3b341;
+            --blue: #58a6ff;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 2rem;
+        }
+
+        nav {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .content {
+            max-width: 900px;
+            margin: 3rem auto;
+            background: var(--bg-light);
+            padding: 2.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .status-card {
+            background: var(--bg-dark);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-top: 1.5rem;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.6rem 0;
+        }
+
+        .label {
+            color: var(--text-dim);
+        }
+
+        .value.APPROVED { color: var(--green); font-weight: 600; }
+        .value.PENDING { color: var(--yellow); font-weight: 600; }
+        .value.REJECTED, .value.CANCELLED { color: var(--red); font-weight: 600; }
+
+        .btn {
+            padding: 0.7rem 1.3rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-blue { background: var(--blue); color: white; }
+        .btn-blue:hover { opacity: 0.9; }
+
+        .btn-green { background: var(--green); color: white; }
+        .btn-green:hover { background: var(--green-light); }
+
+        .btn-red { background: var(--red); color: white; }
+        .btn-red:hover { opacity: 0.9; }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success { background: rgba(46,160,67,0.15); color: var(--green); }
+        .alert-danger { background: rgba(248,81,73,0.15); color: var(--red); }
+        .alert-warning { background: rgba(227,179,65,0.15); color: var(--yellow); }
+
+        /* Public form */
+        .public-form input {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .public-form button {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 8px;
+            background: var(--green);
+            color: white;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .public-form button:hover {
+            background: var(--green-light);
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .footer-link a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        /* Centered certificate button */
+        .center-btn-wrapper {
+            text-align: center;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <nav>
+        <a href="/" class="logo">PrivyLoans</a>
+        <a href="{{ url_for('dashboard') }}" style="color: var(--blue); text-decoration:none;">Dashboard</a>
+    </nav>
+
+    <div class="content">
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- DETAIL VIEW -->
+        {% if detail_view %}
+
+            <h2>Application Details</h2>
+
+            <div class="status-card">
+
+                <!-- STATUS ROW -->
+                <div class="row">
+                    <div class="label">Status:</div>
+                    <div class="value {{ application.status }}">{{ application.status }}</div>
+                </div>
+
+                
+
+                <!-- ZKP VERIFICATION -->
+                <div class="row">
+                    <div class="label">ZKP Verification:</div>
+                    <div>
+                        {% if is_zkp_valid %}
+                            <span class="value APPROVED">✔ Valid</span>
+                        {% else %}
+                            <span class="value REJECTED">✘ Invalid</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- CENTERED CERTIFICATE BUTTON -->
+                {% if application.status == 'APPROVED' %}
+                <div class="center-btn-wrapper">
+                    <a class="btn btn-blue"
+                       href="{{ url_for('application_certificate', app_id=application.id) }}">
+                       View Cryptographic Approval Certificate
+                    </a>
+                </div>
+                {% endif %}
+
+            <!-- ACTION BUTTON: WITHDRAW -->
+            {% if application.status == 'PENDING' %}
+                <form method="POST"
+                      action="{{ url_for('withdraw_application', app_id=application.id) }}"
+                      style="margin-top:1rem;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="btn btn-red"
+                            onclick="return confirm('Withdraw this application?')">
+                        Withdraw Application
+                    </button>
+                </form>
+            {% endif %}
+
+            <!-- UPDATE DETAILS CARD
+            <div class="status-card">
+                <h3 style="margin-top:0;">Update Application Details</h3>
+                <p class="label">Editable only while status is PENDING.</p>
+
+                <form method="POST" action="{{ url_for('update_application', app_id=application.id) }}">
+
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                    <label>Full Name</label>
+                    <input type="text" value="{{ application.name }}" readonly>
+
+                    <label>Amount (₹)</label>
+                    <input type="number" value="{{ application.amount }}" readonly>
+
+                    <label>Phone</label>
+                    <input type="tel" value="{{ application.phone }}" readonly>
+
+                    <label>Email</label>
+                    <input type="email" name="email"
+                           value="{{ application.email }}"
+                           {% if application.status != 'PENDING' %}readonly{% endif %}>
+
+                    <label>PAN</label>
+                    <input type="text" name="pan"
+                           value="{{ application.pan }}"
+                           {% if application.status != 'PENDING' %}readonly{% endif %}>
+
+                    <label>Age</label>
+                    <input type="number" name="age"
+                           value="{{ application.age }}"
+                           {% if application.status != 'PENDING' %}readonly{% endif %}>
+
+                    <label>Term (months)</label>
+                    <input type="number" name="term"
+                           value="{{ application.term }}"
+                           {% if application.status != 'PENDING' %}readonly{% endif %}>
+
+                    <label>Income (₹)</label>
+                    <input type="number" name="income"
+                           value="{{ application.income }}"
+                           {% if application.status != 'PENDING' %}readonly{% endif %}>
+
+                    <label>Purpose</label>
+                    <input type="text" name="purpose"
+                           value="{{ application.purpose }}"
+                           {% if application.status != 'PENDING' %}readonly{% endif %}>
+
+                    <button type="submit"
+                            class="btn btn-green"
+                            style="margin-top:1rem;"
+                            {% if application.status != 'PENDING' %}disabled{% endif %}>
+                        Save Changes
+                    </button>
+                </form>
+            </div> -->
+
+        <!-- PUBLIC VIEW -->
+        {% else %}
+
+            <h2>Check Application Status</h2>
+
+            <form method="POST" class="public-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <label>Application ID:</label>
+                <input type="text" name="app_id" required>
+                <button type="submit">Check Status</button>
+            </form>
+
+            {% if application %}
+                <div class="status-card">
+                    <div class="row">
+                        <div class="label">Name:</div>
+                        <div>{{ application.name }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">Status:</div>
+                        <div class="value {{ application.status }}">{{ application.status }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="label">ZKP Check:</div>
+                        <div>
+                            {% if application.valid %}
+                                ✔ Valid
+                            {% else %}
+                                ✘ Invalid
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            {% elif request.method == 'POST' %}
+                <div class="alert alert-warning">Application Not Found.</div>
+            {% endif %}
+
+            <div class="footer-link">
+                <a href="{{ url_for('index') }}">← Back to Home</a>
+            </div>
+
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

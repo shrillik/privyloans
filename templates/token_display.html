@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approval Token - PrivyLoans</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --background-dark: #0d1117; --background-light: #161b22; --border-color: #30363d;
+            --text-primary: #e6edf3; --text-secondary: #848d97; --accent-green: #2ea043;
+            --accent-green-hover: #3fb950; --accent-blue: #58a6ff;
+        }
+        body {
+            background-color: var(--background-dark); color: var(--text-primary);
+            font-family: 'Inter', sans-serif; margin: 0; display: flex;
+            justify-content: center; align-items: center; min-height: 100vh;
+            padding: 1rem; box-sizing: border-box;
+        }
+        .token-container {
+            background-color: var(--background-light); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 3rem; text-align: center; max-width: 700px;
+        }
+        h2 { font-size: 2rem; margin-top: 0; letter-spacing: -0.5px; color: var(--text-primary); }
+        .token-box {
+            background-color: var(--background-dark); border: 1px dashed var(--accent-green);
+            padding: 1.5rem; border-radius: 8px; margin: 2rem 0;
+            word-break: break-all;
+        }
+        .token-box code {
+            font-size: 1rem; font-weight: 500; color: var(--accent-green-hover);
+        }
+        .btn-copy {
+            background-color: var(--accent-blue);
+            padding: 0.8rem 2rem; border-radius: 8px; color: white;
+            border: none; cursor: pointer; font-weight: 600; transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+        .btn-copy:hover {
+            background-color: #4b8cd9;
+            transform: translateY(-2px);
+        }
+        .btn-back {
+            text-decoration: none; color: var(--text-secondary); margin-left: 1rem;
+            transition: color 0.2s;
+        }
+        .btn-back:hover {
+            color: var(--accent-blue);
+        }
+    </style>
+</head>
+<body>
+    <div class="token-container">
+        <h2>✅ Anonymous Approval Token Received</h2>
+        <p>This token proves your application (ID: {{ app_id[:8] }}...) was approved by PrivyLoans without revealing your identity. Keep it secure!</p>
+        
+        <div class="token-box">
+            <p style="margin-top: 0; color: var(--accent-green);">Your Blind Signature Token:</p>
+            <code id="approval-token">{{ token }}</code>
+        </div>
+        
+        <button class="btn-copy" onclick="copyToken()">Copy Token</button>
+        <a href="{{ url_for('application_status', app_id=app_id) }}" class="btn-back">Go Back to Status</a>
+
+        <script>
+            function copyToken() {
+                const tokenElement = document.getElementById('approval-token');
+                const tokenText = tokenElement.textContent || tokenElement.innerText;
+                
+                // Using document.execCommand('copy') for better compatibility in environments
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = tokenText;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Token copied to clipboard!');
+                } catch (err) {
+                    console.error('Failed to copy token:', err);
+                    alert('Failed to copy token. Please select and copy manually.');
+                }
+                document.body.removeChild(tempTextArea);
+            }
+        </script>
+    </div>
+</body>
+</html>
