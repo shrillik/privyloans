@@ -19,30 +19,69 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .login-container {
-            background-color: var(--background-light); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 3rem; width: 100%; max-width: 400px;
-            animation: fadeIn 0.6s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, var(--background-light) 0%, #1a1f26 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px; 
+            padding: 3.5rem; 
+            width: 100%; 
+            max-width: 440px;
+            animation: fadeIn 0.6s ease-out; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
-        h2 { text-align: center; margin-top: 0; letter-spacing: -0.5px; margin-bottom: 2rem; }
+        h2 { 
+            text-align: center; 
+            margin-top: 0; 
+            letter-spacing: -1px; 
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .register-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+        }
         .form-group { margin-bottom: 1.5rem; }
         label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-secondary); }
         input[type="text"], input[type="password"] {
-            width: 100%; background-color: var(--background-dark); border: 1px solid var(--border-color);
-            color: var(--text-primary); padding: 0.8rem; border-radius: 8px; font-size: 1rem;
-            box-sizing: border-box; transition: all 0.2s;
+            width: 100%; 
+            background-color: var(--background-dark); 
+            border: 1.5px solid var(--border-color);
+            color: var(--text-primary); 
+            padding: 0.95rem; 
+            border-radius: 10px; 
+            font-size: 1rem;
+            box-sizing: border-box; 
+            transition: all 0.3s ease;
         }
         input:focus {
-            outline: none; border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+            outline: none; 
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.15);
+            transform: translateY(-1px);
         }
         .btn-submit {
-            width: 100%; padding: 0.8rem; font-size: 1.1rem; font-weight: 600; color: white;
-            background-color: var(--accent-green); border: none; border-radius: 8px; cursor: pointer;
-            transition: all 0.2s ease-in-out; margin-top: 0.5rem;
+            width: 100%; 
+            padding: 1rem; 
+            font-size: 1.05rem; 
+            font-weight: 600; 
+            color: white;
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-hover) 100%);
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer;
+            transition: all 0.3s ease-in-out; 
+            margin-top: 0.5rem;
+            box-shadow: 0 8px 20px rgba(46, 160, 67, 0.3);
         }
         .btn-submit:hover {
-            background-color: var(--accent-green-hover);
             transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(46, 160, 67, 0.4);
         }
         .alert {
             padding: 1rem; margin-bottom: 1.5rem; border-radius: 8px; text-align: center;
@@ -63,6 +102,7 @@
 <body>
     <div class="login-container">
         <h2>Register New Account</h2>
+        <p class="register-subtitle">Create your secure account</p>
 
         {# show flash messages from Flask #}
         {% with messages = get_flashed_messages(with_categories=true) %}

@@ -24,20 +24,36 @@
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
         .login-container { 
-            background-color: var(--background-light); 
+            background: linear-gradient(135deg, var(--background-light) 0%, #1a1f26 100%);
             border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            padding: 3rem; 
+            border-radius: 16px; 
+            padding: 3.5rem; 
             width: 100%; 
-            max-width: 400px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 440px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .login-container h2 { 
             margin-top: 0; 
-            font-size: 2rem; 
+            font-size: 2.2rem; 
             text-align: center; 
-            letter-spacing: -0.5px; 
+            letter-spacing: -1px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
             margin-bottom: 2.5rem;
+            font-size: 0.95rem;
         }
         .form-group { 
             margin-bottom: 1.5rem; 
@@ -51,36 +67,37 @@
         input { 
             width: 100%; 
             background-color: var(--background-dark); 
-            border: 1px solid var(--border-color); 
+            border: 1.5px solid var(--border-color); 
             color: var(--text-primary); 
-            padding: 0.8rem; 
-            border-radius: 8px; 
+            padding: 0.95rem; 
+            border-radius: 10px; 
             font-size: 1rem; 
             box-sizing: border-box; 
-            transition: border-color 0.2s; 
+            transition: all 0.3s ease; 
         }
         input:focus { 
             outline: none; 
             border-color: var(--accent-blue); 
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2); 
+            box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.15); 
+            transform: translateY(-1px);
         }
         .btn-submit { 
             width: 100%; 
-            padding: 0.9rem; 
-            font-size: 1.1rem; 
+            padding: 1rem; 
+            font-size: 1.05rem; 
             font-weight: 600; 
             color: white; 
-            background-color: var(--accent-blue); /* Using blue for login button */
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #4b8cd9 100%);
             border: none; 
-            border-radius: 8px; 
+            border-radius: 10px; 
             cursor: pointer; 
-            transition: all 0.2s ease-in-out; 
+            transition: all 0.3s ease-in-out; 
             margin-top: 1rem;
+            box-shadow: 0 8px 20px rgba(88, 166, 255, 0.3);
         }
         .btn-submit:hover { 
-            background-color: #4b8cd9; 
             transform: translateY(-2px); 
-            box-shadow: 0 4px 15px rgba(88, 166, 255, 0.3); 
+            box-shadow: 0 12px 30px rgba(88, 166, 255, 0.4); 
         }
         .alert { 
             padding: 1rem; 
@@ -114,6 +131,7 @@
 <body>
     <div class="login-container">
         <h2>User Login</h2>
+        <p class="login-subtitle">Access your loan applications</p>
         
         <!-- Flash Messages (for invalid credentials) -->
         {% with messages = get_flashed_messages(with_categories=true) %}

@@ -1,0 +1,38 @@
+.admin-container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 3rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  animation: fadeIn 0.6s ease-out;
+  box-shadow: var(--shadow-xl);
+}
+
+.admin-container h2 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  letter-spacing: -1px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--accent-green);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.explanation-list {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.explanation-list li {
+  margin: 0.25rem 0;
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 2rem 1.5rem;
+  }
+}

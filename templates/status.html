@@ -51,58 +51,123 @@
         .content {
             max-width: 900px;
             margin: 3rem auto;
-            background: var(--bg-light);
-            padding: 2.5rem;
-            border-radius: 10px;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #1a1f26 100%);
+            padding: 3rem;
+            border-radius: 16px;
             border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h2 {
             margin-top: 0;
             text-align: center;
             color: var(--text);
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .status-card {
             background: var(--bg-dark);
-            padding: 1.5rem;
-            border-radius: 8px;
+            padding: 2rem;
+            border-radius: 12px;
             border: 1px solid var(--border);
             margin-top: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .row {
             display: flex;
             justify-content: space-between;
-            margin: 0.6rem 0;
+            margin: 1rem 0;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+        }
+        .row:last-child {
+            border-bottom: none;
         }
 
         .label {
             color: var(--text-dim);
+            font-weight: 500;
         }
 
-        .value.APPROVED { color: var(--green); font-weight: 600; }
-        .value.PENDING { color: var(--yellow); font-weight: 600; }
-        .value.REJECTED, .value.CANCELLED { color: var(--red); font-weight: 600; }
+        .value {
+            font-weight: 600;
+        }
+
+        .value.APPROVED { 
+            color: var(--green); 
+            background-color: rgba(46, 160, 67, 0.15);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .value.PENDING { 
+            color: var(--yellow); 
+            background-color: rgba(227, 179, 65, 0.15);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .value.REJECTED, .value.CANCELLED { 
+            color: var(--red); 
+            background-color: rgba(248, 81, 73, 0.15);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
 
         .btn {
-            padding: 0.7rem 1.3rem;
-            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
             display: inline-block;
+            transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
-        .btn-blue { background: var(--blue); color: white; }
-        .btn-blue:hover { opacity: 0.9; }
+        .btn-blue { 
+            background: linear-gradient(135deg, var(--blue) 0%, #4b8cd9 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+        }
+        .btn-blue:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(88, 166, 255, 0.4);
+        }
 
-        .btn-green { background: var(--green); color: white; }
-        .btn-green:hover { background: var(--green-light); }
+        .btn-green { 
+            background: linear-gradient(135deg, var(--green) 0%, #3fb950 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 160, 67, 0.3);
+        }
+        .btn-green:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 160, 67, 0.4);
+        }
 
-        .btn-red { background: var(--red); color: white; }
-        .btn-red:hover { opacity: 0.9; }
+        .btn-red { 
+            background: linear-gradient(135deg, var(--red) 0%, #d73a49 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(248, 81, 73, 0.3);
+        }
+        .btn-red:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(248, 81, 73, 0.4);
+        }
 
         .alert {
             padding: 1rem;
@@ -117,28 +182,39 @@
         /* Public form */
         .public-form input {
             width: 100%;
-            padding: 0.9rem;
+            padding: 1rem;
             background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
             margin-bottom: 1.5rem;
             color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .public-form input:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.15);
+            transform: translateY(-1px);
         }
 
         .public-form button {
             width: 100%;
-            padding: 0.9rem;
-            border-radius: 8px;
-            background: var(--green);
+            padding: 1rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--green) 0%, #3fb950 100%);
             color: white;
             border: none;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(46, 160, 67, 0.3);
         }
 
         .public-form button:hover {
-            background: var(--green-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 160, 67, 0.4);
         }
 
         .footer-link {
