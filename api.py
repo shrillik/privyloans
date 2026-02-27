@@ -52,7 +52,13 @@ def init_db():
         # Create default admin if not exists
         if not Admin.query.filter_by(username='admin').first():
             admin_password = bcrypt.generate_password_hash('admin123').decode('utf-8')
-            admin = Admin(username='admin', password_hash=admin_password)
+            admin = Admin(
+                username='admin',
+                password_hash=admin_password,
+                blind_priv_N=str(BLIND_PRIV_N),
+                blind_priv_e=str(BLIND_PUB_E),
+                blind_priv_d=str(BLIND_PRIV_D)
+            )
             db.session.add(admin)
             db.session.commit()
             print("✓ Database initialized and admin user created")
