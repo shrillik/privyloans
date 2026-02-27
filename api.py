@@ -43,6 +43,22 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 limiter = Limiter(get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
 
+# Load ML Model
+try:
+    loan_approval_model = joblib.load('loan_model.joblib')
+    scaler = joblib.load('scaler.joblib')
+except Exception:
+    loan_approval_model = None
+    scaler = None
+
+# Crypto Keys
+private_key, public_key = generate_keys()
+BLIND_KEYS = generate_blind_keys()
+BLIND_PUB_N = BLIND_KEYS['N']
+BLIND_PUB_E = BLIND_KEYS['e']
+BLIND_PRIV_N = BLIND_KEYS['N']
+BLIND_PRIV_D = BLIND_KEYS['d']
+
 # Auto-initialize database on startup
 def init_db():
     """Initialize database tables and create default admin user"""
@@ -67,22 +83,6 @@ def init_db():
 
 # Initialize database
 init_db()
-
-# Load ML Model
-try:
-    loan_approval_model = joblib.load('loan_model.joblib')
-    scaler = joblib.load('scaler.joblib')
-except Exception:
-    loan_approval_model = None
-    scaler = None
-
-# Crypto Keys
-private_key, public_key = generate_keys()
-BLIND_KEYS = generate_blind_keys()
-BLIND_PUB_N = BLIND_KEYS['N']
-BLIND_PUB_E = BLIND_KEYS['e']
-BLIND_PRIV_N = BLIND_KEYS['N']
-BLIND_PRIV_D = BLIND_KEYS['d']
 
 
 @login_manager.user_loader
