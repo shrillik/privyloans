@@ -43,6 +43,25 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 limiter = Limiter(get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
 
+# Auto-initialize database on startup
+def init_db():
+    """Initialize database tables and create default admin user"""
+    with app.app_context():
+        db.create_all()
+        
+        # Create default admin if not exists
+        if not Admin.query.filter_by(username='admin').first():
+            admin_password = bcrypt.generate_password_hash('admin123').decode('utf-8')
+            admin = Admin(username='admin', password_hash=admin_password)
+            db.session.add(admin)
+            db.session.commit()
+            print("✓ Database initialized and admin user created")
+        else:
+            print("✓ Database already initialized")
+
+# Initialize database
+init_db()
+
 # Load ML Model
 try:
     loan_approval_model = joblib.load('loan_model.joblib')
